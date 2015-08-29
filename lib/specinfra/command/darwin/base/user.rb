@@ -8,6 +8,10 @@ class Specinfra::Command::Darwin::Base::User < Specinfra::Command::Base::User
       "finger #{escape(user)} | grep -E '^Directory' | awk '{ print $4 }' | grep -E '^#{escape(path_to_shell)}$'"
     end
 
+    def check_has_login_item(user, item)
+      %Q{defaults read /Users/#{escape(user)}/Library/Preferences/com.apple.loginitems SessionItems | grep -E Name\\ =\\ \\"?#{escape(item)}\\"?\\;}
+    end
+
     def get_home_directory(user)
       "finger #{escape(user)} | grep -E '^Directory' | awk '{ print $2 }'"
     end
